@@ -1,13 +1,18 @@
 #include "client.h"
+#include "client_b.h"
 #include "ui_client.h"
-#include "menu.h"
+#include "vehicule.h"
+#include "ui_vehicule.h"
+#include "connexion.h"
+#include <QApplication>
+#include <QMessageBox>
 
 client::client(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::client)
 {
     ui->setupUi(this);
-
+  ui->tab_client->setModel(c.afficher());
     // Create and set up the menu button
     menuButton = new QPushButton("", this);
     menuButton->setGeometry(20, 43, 71, 41);
@@ -53,6 +58,7 @@ client::~client()
 
 
 
+
 void client::on_pushButton_15_clicked()
 {
     if (side_menu->width() < 1 ) {
@@ -70,9 +76,169 @@ void client::on_pushButton_15_clicked()
     }
 }
 
-void client::on_pushButton_clicked()
+void client::on_pushButton_21_clicked()
 {
-    menu m;
-    m.setModal(true);
-    m.exec();
+    vehicule v;
+    v.setModal(true);
+    v.exec();
+}
+
+
+
+void client::on_ajouter_clicked()
+{
+int a=0;
+    QString n=ui->lineEdit_3->text();
+    QString p=ui->lineEdit_6->text();
+    QString ad=ui->lineEdit_5->text();
+    int ci=ui->lineEdit_8->text().toInt();
+    int nu=ui->lineEdit_7->text().toInt();
+     client_b c(n,p,nu,ci,ad);
+     QRegExp rx("^[A-Za-z]+$");
+     bool is_int;
+
+
+
+     if(n.isEmpty() )
+     {
+
+         QMessageBox::critical(nullptr, QObject::tr("Erreur de saisie"),
+                               QObject::tr("Le champ Nom est vide. Veuillez entrer un nom."),QMessageBox::Cancel);
+         return;
+
+
+
+     }
+     else if(!rx.exactMatch(n))
+
+     {
+         QMessageBox::critical(nullptr, QObject::tr("Erreur de saisie"),
+                               QObject::tr("Le champ Nom ne doit contenir que des lettres. Veuillez vérifier votre saisie."),QMessageBox::Cancel);
+         //return;
+     }
+     else
+     {
+         a++;
+     }
+     if(p.isEmpty() )
+     {
+
+         QMessageBox::critical(nullptr, QObject::tr("Erreur de saisie"),
+                               QObject::tr("Le champ Nom est vide. Veuillez entrer un nom."),QMessageBox::Cancel);
+         return;
+
+
+
+     }
+     else if(!rx.exactMatch(p))
+     {
+         QMessageBox::critical(nullptr, QObject::tr("Erreur de saisie"),
+                               QObject::tr("Le champ Nom ne doit contenir que des lettres. Veuillez vérifier votre saisie."),QMessageBox::Cancel);
+         //return;
+     }
+     else
+     {
+         a++;
+     }
+
+
+
+
+
+bool test;
+  if(a==2)
+ {
+   bool test=c.ajouter();
+}
+     if(test!=true && a==2)
+     {
+      ui->tab_client->setModel(c.afficher());
+          QMessageBox::information(nullptr, QObject::tr("OK"),
+           QObject::tr("ajouter effectue .\n" "click cancel to exsit"),QMessageBox::Cancel);
+
+     }
+     else
+     {
+       ui->tab_client->setModel(c.afficher());
+          QMessageBox::critical(nullptr, QObject::tr("not ok "),
+                                QObject::tr("ajouter non effectuer. \n" "click cancel to exsit"),QMessageBox::Cancel);
+     }
+     //c.ajouter();
+
+}
+
+void client::on_supprimer_clicked()
+{
+client_b c;
+c.setcin(ui->id_sup->text().toInt());
+bool test=c.supprimer(c.getcin());
+if(test)
+{
+ui->tab_client->setModel(c.afficher());
+     QMessageBox::information(nullptr, QObject::tr("OK"),
+      QObject::tr("supp avec succes .\n" "click cancel to exsit"),QMessageBox::Cancel);
+
+}
+else
+{
+
+     QMessageBox::critical(nullptr, QObject::tr("not ok "),
+                           QObject::tr("echec de supp. \n" "click cancel to exsit"),QMessageBox::Cancel);
+}
+
+}
+
+void client::on_supprimer_2_clicked()
+{
+    client_b v;
+   client_b c;
+   //QString x;
+   v.setcin(ui->id_sup->text().toInt());
+    c=v.afficherr(132);
+   /* if(c=="")
+    {
+        c="mmmm";
+    }*/
+//QString myString = QString::number(c);
+
+    //ui->lineEdit_3->se
+    ui->lineEdit_9->setText(c.getnom());
+
+    // ui->lineEdit_3->setText(c.getcin());
+    //ui->lineEdit_3->setText(c.getcin());
+
+}
+
+
+
+void client::on_modifier_clicked()
+{
+
+
+
+    QString n=ui->lineEdit_3->text();
+    QString p=ui->lineEdit_6->text();
+    QString ad=ui->lineEdit_5->text();
+    int ci=ui->lineEdit_8->text().toInt();
+    int nu=ui->lineEdit_7->text().toInt();
+     client_b c(n,p,nu,ci,ad);
+
+
+    bool test=c.modifier(ci);
+    if(test)
+    {
+
+         QMessageBox::critical(nullptr, QObject::tr("not ok "),
+                               QObject::tr("ajouter non effectuer. \n" "click cancel to exsit"),QMessageBox::Cancel);
+
+    }
+    else
+    {
+
+       ui->tab_client->setModel(c.afficher());
+
+       QMessageBox::information(nullptr, QObject::tr("OK"),
+        QObject::tr("modifer  effectue .\n" "click cancel to exsit"),QMessageBox::Cancel);
+
+    }
 }
