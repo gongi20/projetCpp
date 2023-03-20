@@ -14,6 +14,9 @@ int main(int argc, char *argv[])
 
 
 
+
+
+
          w.show();
          QMessageBox::information(nullptr, QObject::tr("database is open"),
           QObject::tr("coonection successful.\n" "click cancel to exsit"),QMessageBox::Cancel);
