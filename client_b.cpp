@@ -22,6 +22,8 @@ client_b::client_b()
     prenom="";
     cin=0;
     adresse="";
+    arduino b;
+    b.write_to_arduino("1");
 
 }
 client_b::client_b(QString nom,QString prenom,int number,int cin,QString adresse)
@@ -88,6 +90,44 @@ bool client_b::ajouter()
     return  query.exec();
 }
 
+
+bool client_b::ajouterparking(QString a,QString b)
+{
+
+    QSqlQuery query;
+
+
+          query.prepare("INSERT INTO PARKING (MATRICULE,TEMPS)"
+                        "VALUES (:MATRICULE,:TEMPS)");
+
+
+           query.bindValue(":MATRICULE",a);
+
+           query.bindValue(":TEMPS",b);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return  query.exec();
+}
+
+
+
+
+
+
 QSqlQueryModel *client_b::afficher()
 {
     QSqlQueryModel * model=new QSqlQueryModel();
@@ -142,6 +182,7 @@ QSqlQueryModel *client_b::chercherr(QString n)
        model->setHeaderData(3, Qt::Horizontal, QObject::tr("PRENOM"));
        model->setHeaderData(5, Qt::Horizontal, QObject::tr("ADRESSE"));
        model->setHeaderData(6, Qt::Horizontal, QObject::tr("NUM"));
+
        return model;
 
 }
@@ -610,3 +651,65 @@ query.exec();
 
 }
 
+QSqlQueryModel * client_b::chercherve(int cin,QString p)
+{
+    QSqlQueryModel * model=new QSqlQueryModel();
+
+
+     QSqlQuery query;
+        query.prepare("SELECT * FROM GS_RENDEZV where MATRICULE=:MATRICULE  ");
+        query.bindValue(":MATRICULE", cin);
+        query.bindValue(":DATE_RDV", p);
+        query.exec();
+        model->setQuery(query);
+     model->setHeaderData(0,Qt::Horizontal,QObject::tr("ID_RDV"));
+
+     model->setHeaderData(2,Qt::Horizontal,QObject::tr("DATE_RDV"));
+     model->setHeaderData(3,Qt::Horizontal,QObject::tr("HEURE"));
+     model->setHeaderData(5,Qt::Horizontal,QObject::tr("STATUT"));
+     model->setHeaderData(7,Qt::Horizontal,QObject::tr("ID_EMPLOYE"));
+     model->setHeaderData(8,Qt::Horizontal,QObject::tr("MATRICULE"));
+
+    return model;
+}
+
+QSqlQueryModel * client_b::cherchernbv()
+{
+    QSqlQueryModel * model=new QSqlQueryModel();
+    int a;
+    QString ve = "v";
+
+     QSqlQuery query;
+        query.prepare("SELECT NBR FROM NBR_VOITURE where ID=:id  ");
+        query.bindValue(":id", ve);
+        query.exec();
+        model->setQuery(query);
+     model->setHeaderData(0,Qt::Horizontal,QObject::tr("NBR"));
+
+    return model;
+}
+
+bool client_b::modifierp(int a) {
+    QSqlQuery query;
+
+    QString ve="v";
+    query.prepare("UPDATE NBR_VOITURE SET NBR=:NBR WHERE ID=:ve");
+    query.bindValue(":NBR",a);
+
+    return query.exec();
+}
+
+QSqlQueryModel *client_b::afficherpa()
+{
+    QSqlQueryModel * model=new QSqlQueryModel();
+
+
+ model->setQuery("select * from NBR_VOITURE");
+
+    model->setHeaderData(0,Qt::Horizontal,QObject::tr("CIN"));
+
+
+
+
+    return  model;
+}

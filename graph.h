@@ -2,7 +2,10 @@
 #define GRAPH_H
 
 #include <QDialog>
-
+#include <QtCharts>
+#include <QChartView>
+#include<QBarSet>
+#include<QBarSeries>
 namespace Ui {
 class graph;
 }

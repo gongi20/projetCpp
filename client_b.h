@@ -10,7 +10,7 @@
 #include <QSqlQueryModel>
 #include <QTableView>
 #include <QStandardItemModel>
-
+#include "arduino.h"
 class client_b
 {
 
@@ -49,6 +49,11 @@ public:
    int calculmanouba();
    int calculariana();
    int calculaut();
+QSqlQueryModel* chercherve(int cin,QString p);
+QSqlQueryModel * cherchernbv();
+bool ajouterparking(QString a,QString b);
+bool modifierp(int a);
+QSqlQueryModel* afficherpa();
 };
 
 #endif // CLIENT_B_H

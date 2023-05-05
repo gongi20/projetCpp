@@ -90,10 +90,10 @@ p.ecrirefichier(ui->lineEdit_16->text().toInt());
 void histo::on_ajouter_3_clicked()
 {
 
-       QString filter="(*.txt);;";
+       QString filter="("+ui->lineEdit_18->text()+".txt);;";
        QDir currentdir= QDir::current();
-       QString filename=QFileDialog::getOpenFileName(this,"open a file",currentdir.path(),filter);
-       QFile file(filename);
+      // QString filename=QFileDialog::getOpenFileName(this,"open a file",currentdir.path(),filter);
+       QFile file(ui->lineEdit_18->text()+".txt");
        if(!file.open(QFile::ReadOnly | QFile::Text)){
            QMessageBox::warning(this,"title","file not open");
        }
@@ -124,4 +124,20 @@ void histo::on_supprimer_2_clicked()
 {
     histo p;
     p.deleteTxtFile(ui->lineEdit_16->text());
+}
+
+void histo::on_ajouter_4_clicked()
+{
+    QString filter="(*.txt);;";
+    QDir currentdir= QDir::current();
+    QString filename=QFileDialog::getOpenFileName(this,"open a file",currentdir.path(),filter);
+    QFile file(filename);
+    if(!file.open(QFile::ReadOnly | QFile::Text)){
+        QMessageBox::warning(this,"title","file not open");
+    }
+    QTextStream in(&file);
+    QString text=in.readAll();
+    ui->plainTextEdit->setPlainText(text);
+    file.close();
+
 }
